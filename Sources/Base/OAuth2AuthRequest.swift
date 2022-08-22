@@ -82,7 +82,9 @@ open class OAuth2AuthRequest {
 	
 	/// Query parameters to use with the request.
 	open var params = OAuth2RequestParams()
-	
+
+	/// Indication if request is used for refresh
+	open var isRefresh: Bool = false
 	
 	/**
 	Designated initializer. Neither URL nor method can later be changed.
@@ -190,7 +192,10 @@ open class OAuth2AuthRequest {
 			if oauth2.clientConfig.secretInBody {
 				oauth2.logger?.debug("OAuth2", msg: "Adding “client_id” and “client_secret” to request body")
 				finalParams["client_id"] = clientId
-				finalParams["client_secret"] = secret
+
+				if !isRefresh || (isRefresh && !oauth2.clientConfig.excludeSecretInRefresh) {
+					finalParams["client_secret"] = secret
+				}
 			}
 			
 			// add Authorization header (if not in body)
@@ -203,6 +208,7 @@ open class OAuth2AuthRequest {
 				else {
 					throw OAuth2Error.utf8EncodeError
 				}
+
 				finalParams.removeValue(forKey: "client_id")
 				finalParams.removeValue(forKey: "client_secret")
 			}

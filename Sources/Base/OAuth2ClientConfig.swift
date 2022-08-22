@@ -64,6 +64,9 @@ open class OAuth2ClientConfig {
 	
 	/// Whether the receiver should use the request body instead of the Authorization header for the client secret; defaults to `false`.
 	public var secretInBody = false
+
+	/// Exclude the client secret in refresh tokens call
+	public var excludeSecretInRefresh = false
 	
 	/// How the client communicates the client secret with the server. Defaults to ".None" if there is no secret, ".clientSecretPost" if
 	/// "secret_in_body" is `true` and ".clientSecretBasic" otherwise. Interacts with the `secretInBody` setting.

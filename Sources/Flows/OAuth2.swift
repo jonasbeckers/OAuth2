@@ -346,6 +346,8 @@ open class OAuth2: OAuth2Base {
 		}
 		
 		let req = OAuth2AuthRequest(url: (clientConfig.refreshURL ?? clientConfig.tokenURL ?? clientConfig.authorizeURL))
+		req.isRefresh = true
+
 		req.params["grant_type"] = "refresh_token"
 		req.params["refresh_token"] = refreshToken
 		if let clientId = clientId {
